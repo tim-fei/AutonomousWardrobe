@@ -55,7 +55,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log('Connected to mongodb');
-  app.listen(8080, () => {
+  app.listen(3000, () => {
     console.log('listening on port 8080');
   });
 });
