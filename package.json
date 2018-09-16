@@ -1,0 +1,27 @@
+{
+  "name": "autonomous-wardrobe",
+  "version": "1.0.0",
+  "description": "A web app that recognize and save clothing pictures to give suggestions on what to wear",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wtyanan/AutonomousWardrobe.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wtyanan/AutonomousWardrobe/issues"
+  },
+  "homepage": "https://github.com/wtyanan/AutonomousWardrobe#readme",
+  "dependencies": {
+    "brain.js": "^1.2.8",
+    "express": "^4.16.3",
+    "express-async-handler": "^1.1.4",
+    "hbs": "^4.0.1",
+    "mongoose": "^5.2.15",
+    "multer": "^1.3.1"
+  }
+}
