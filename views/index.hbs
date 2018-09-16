@@ -22,6 +22,18 @@
 
 </head>
 <body class="text-ubuntu" data-spy="scroll" data-target="#header" data-offset="60">
+  {{#if successUpload}}
+  <div class="alert alert-success alert-dismissible position-absolute w-100">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Success!</strong> Your clothing has been added to the wardrobe.
+  </div>
+  {{/if}}
+  {{#if errorUpload}}
+  <div class="alert alert-danger alert-dismissible position-absolute w-100">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    <strong>Error!</strong> {{errorMessage}}
+  </div>
+  {{/if}}
   <div id="wrapper" class="container d-flex align-items-center justify-content-center flex-column">
     <div id="title" class="d-flex align-items-center justify-content-center">Autonomous Wardrobe</div>
     <div id="options" class="d-flex flex-column align-items-center justify-content-center">
@@ -61,8 +73,8 @@
             </button>
           </div>
           <div class="modal-body">
-            <form action="/upload" method="post" enctype="multipart/form-data">
-              <input type="file" name="cloth" accept="image/*" capture="environment" style="margin-top: 10px; margin-bottom: 15px;">
+            <form method="post" enctype="multipart/form-data" action="/upload">
+              <input type="file" name="image" accept="image/*" capture="environment" style="margin-top: 10px; margin-bottom: 15px;">
               <button type="submit" class="btn btn-primary">Add to Wardrobe</button>
             </form>
           </div>

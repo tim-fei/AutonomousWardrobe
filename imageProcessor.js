@@ -25,7 +25,6 @@ const colorList = [
   /* blue: */{input: {r: 0, g: 0, b: 1}, output: {good: 1}},
   /* purple: */{input: {r: 0.5, g: 0, b: 0.5}, output: {good: 1}},
   /* yellow: */{input: {r: 1, g: 1, b: 0}, output: {bad: 1}},
-
   /* orange: */{input: {r: 1, g: 0.65, b: 0}, output: {good: 1}},
   /* brown: */{input: {r: 0.65, g: 0.16, b: 0.16}, output: {bad: 1}},
   /* gray: */{input: {r: 0.5, g: 0.5, b: 0.5}, output: {good: 1}},

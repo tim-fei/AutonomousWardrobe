@@ -4,12 +4,14 @@ const path = require('path');
 const hbs = require('hbs');
 const serveStatic = require('serve-static');
 const bodyParser = require('body-parser');
-const multer = require("multer");
+const multer = require('multer');
 const asyncHandler = require('express-async-handler');
+const fs = require('fs');
 
-mongoose.connect('mongodb://localhost:27017/auto-wardrob');
+var imageCounter = 0;
+mongoose.connect('mongodb://localhost:27017/auto-wardrob', { useNewUrlParser: true });
 const upload = multer({
-  dest: path.join(__dirname, 'assets', 'temp');
+  dest: path.join(__dirname, 'assets', 'temp')
 });
 
 var app = express();
@@ -51,8 +53,22 @@ var clothingSchema = new mongoose.Schema({
 
 var Clothing = mongoose.model('Clothing', clothingSchema);
 
+const handleError = (err, res) => {
+  console.error(err);
+  res
+    .status(500)
+    .contentType('text/plain')
+    .end('Oops! Something went wrong!');
+};
+
 app.get('/', (req, res) => {
-  res.render('index');
+  if (req.query && req.query.errorUpload == 'true') {
+    res.render('index', { errorUpload: true, errorMessage: `${req.query.errorMessage}.`});
+  } else if (req.query && req.query.successUpload == 'true') {
+    res.render('index', { successUpload: true });
+  } else {
+    res.render('index');
+  }
 });
 
 app.get('/generateSF', (req, res) => {
@@ -75,27 +91,25 @@ app.get('/generateFL', (req, res) => {
   res.send('gen');
 });
 
-app.post('/upload', upload.single('cloth'), asyncHandler(async (req, res) => {
-  const tempPath = req.file.path;
-  const targetPath = path.join(__dirname, "assets", "wardrobe");
-  if (path.extname(req.file.originalname).toLowerCase() === ".png") {
-    fs.rename(tempPath, targetPath, err => {
-      if (err) return handleError(err, res);
-
-      res
-      .status(200)
-      .contentType("text/plain")
-      .end("File uploaded!");
-    });
+app.post('/upload', upload.single('image'), asyncHandler(async (req, res) => {
+  if (!req.file) {
+    res.redirect('/?errorUpload=true&errorMessage=Please select a file');
   } else {
-    fs.unlink(tempPath, err => {
-      if (err) return handleError(err, res);
-
-      res
-      .status(403)
-      .contentType("text/plain")
-      .end("Only .png files are allowed!");
-    });
+    const tempPath = req.file.path;
+    const fileType = path.extname(req.file.originalname).toLowerCase();
+    const targetPath = path.join(__dirname, 'assets', 'wardrobe', `i${imageCounter}${fileType}`);
+    if (fileType === '.png' || fileType === '.jpg' || fileType === '.jpeg') {
+      fs.rename(tempPath, targetPath, err => {
+        if (err) return handleError(err, res);
+        imageCounter += 1;
+        res.redirect('/?successUpload=true');
+      });
+    } else {
+      fs.unlink(tempPath, err => {
+        if (err) return handleError(err, res);
+        res.redirect('/?errorUpload=true&errorMessage=Only image files are allowed');
+      });
+    }
   }
 }));
 
