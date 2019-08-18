@@ -1,2 +1,4 @@
 # AutonomousWardrobe
-A web app that recognize and save clothing pictures to give suggestions on what to wear
+
+
+- Recognize core features of user-uploaded clothing and provide outift recommendations based on color and season.
